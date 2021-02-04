@@ -1,32 +1,16 @@
 function totalBooksCount(books) {
-  // books --> array of objects
-  // count the objects that are in the array --> hence count the books
-  // return a number that is the count
+  // How many books are there? 
   return books.length;
 }
 
 function totalAccountsCount(accounts) {   
-  let total = accounts.reduce(total => {
-  return total + 1}, 0); 
-  return total;
+  // How many accounts are there? (customers)
+  return accounts.length; 
 }
 
 function booksBorrowedCount(books) {
-  // console.log(books);
-  // return a number
-  // number of books checked out
-  // books.borrows[0].returned is false, it is checked out (not returned)
-  /*
-
-  let countCheckedOut = 0; 
-  for (let book of books){    
-    if (book.borrows[0].returned === false) {
-      countCheckedOut+= 1
-    }
-}
-return countCheckedOut; 
-*/
-
+  // How many books have been borrowed? 
+  // (1st key in borrows -> returned = false -> borrowed)
   let count = 0;
   books.forEach((book) => {
     if (book.borrows[0].returned === false) count += 1;
@@ -34,29 +18,9 @@ return countCheckedOut;
   return count;
 }
 
-
-  // return an array 
-  // array must have 5 objects or less
-  // find most common genres 
-  // sort by most common to least 
-  // no more than 5 genres should be returned so limit to 5
-  // find how many times a genre repeats itself 
-  // first need to know what genres there even are 
-  // genres are like science, classics, travel, "young adult", non-fiction, etc. 
-  // populate an array of objects that has genres and the number of times it shows up 
-
-  /*const filterByGenre = books.filter((book) => {
-    return book.genre; 
-  })
-
-  for (let i = 0; filterByGenre.length; i++) {
-    let array =[]; 
-    if(!filterByGenre === array) {
-      sum+= 1
-    }
-  }
-  */
 function getMostCommonGenres(books) {
+  // What are the 5 most common genres?
+  // most common to least by name & count together 
 const logOfGenres = {}; 
 const mostCommonGenres = []; 
 
@@ -73,16 +37,10 @@ for (let i = 0; i < Object.keys(logOfGenres).length; i++) {
 }
 return mostCommonGenres.sort((genreA, genreB) => genreA.count > genreB.count ? -1 : 1).slice(0,5)
 }
-
-
-// an array of books 
-// containing 5 objects or less
-// get most popular books in the library 
-// popular is number of times book borrowed 
-// returned array objects have two keys
-// name: title of book 
-// count: number of times borrowed 
+ 
 function getMostPopularBooks(books) {
+  // What are the 5 most popular books? 
+  // organized by name and count 
   const mostCommonBooks = [];
   for (const book of books) {
     const { borrows, title } = book;
@@ -95,6 +53,8 @@ function getMostPopularBooks(books) {
 }
 
 function getMostPopularAuthors(books, authors) {
+  // Who are the 5 most popular authors? 
+  // organized by name and account 
   const mostPopularTitles = [];
   for (const book of books) {
     let theAuthorName;
@@ -112,13 +72,15 @@ function getMostPopularAuthors(books, authors) {
     });
   }
   let sortedPopTitles = mostPopularTitles.sort((a, b) => (a.count > b.count ? -1 : 1));
-  const popularAuthors = [];
-  for (const oneTitle of sortedPopTitles) {
-    popularAuthors.push({
+  const popularAuthors = sortedPopTitles.reduce((acc = [], oneTitle) => {
+    //console.log("acc", acc); 
+    acc.push({
       name: oneTitle.theAuthorName,
       count: oneTitle.count,
-    });
-  }
+    })
+    return acc; 
+  }, []); 
+  
   return popularAuthors.slice(0, 5);
 }
 
